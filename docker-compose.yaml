@@ -15,4 +15,4 @@ services:
     volumes:
       - mysql_trips_data:/var/lib/mysql
     environment:
-    MYSQL_ROOT_PASSWORD: abc123
+     MYSQL_ROOT_PASSWORD: abc123
