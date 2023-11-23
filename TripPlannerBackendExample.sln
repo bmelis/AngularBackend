@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripPlannerBackend.API", "TripPlannerBackend.API\TripPlannerBackend.API.csproj", "{A3888794-D4E9-490B-ACDA-16B3607ECAB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripPlannerBackend.DAL", "TripPlannerBackend.DAL\TripPlannerBackend.DAL.csproj", "{47D0877D-4F2B-4E4A-97C4-3895D338E173}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3888794-D4E9-490B-ACDA-16B3607ECAB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3888794-D4E9-490B-ACDA-16B3607ECAB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3888794-D4E9-490B-ACDA-16B3607ECAB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3888794-D4E9-490B-ACDA-16B3607ECAB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47D0877D-4F2B-4E4A-97C4-3895D338E173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47D0877D-4F2B-4E4A-97C4-3895D338E173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47D0877D-4F2B-4E4A-97C4-3895D338E173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47D0877D-4F2B-4E4A-97C4-3895D338E173}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F96FC1F1-4A6A-40A3-A84D-8386FD171B05}
+	EndGlobalSection
+EndGlobal

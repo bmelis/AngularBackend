@@ -1,0 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TripPlannerBackend.DAL.Entity
+{
+    public class SavedTrip
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int SavedTripId { get; set; }
+        public String UserId { get; set; }
+        public int TripId { get; set; }
+        public Trip Trip { get; set; }
+    }
+}
