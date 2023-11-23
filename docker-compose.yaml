@@ -8,3 +8,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     restart: always
+  mysql-trips:
+    image: mysql:latest
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_trips_data:/var/lib/mysql
+    environment:
+    MYSQL_ROOT_PASSWORD: abc123
