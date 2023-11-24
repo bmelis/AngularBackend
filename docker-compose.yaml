@@ -7,13 +7,14 @@ services:
     working_dir: /app
     image: bentmelis/tripplannerbackend:latest
     ports:
-      - "6587:80"
+      - "80:6587"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       DB_USER: root
       DB_PASSWORD: abc123
       DB_SERVER: mysql-trips
       DB_NAME: TripPlanner
+      DB_PORT: 3306
     restart: always
   mysql-trips:
     image: mysql:latest
