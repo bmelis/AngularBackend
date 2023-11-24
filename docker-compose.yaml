@@ -7,7 +7,7 @@ services:
     working_dir: /app
     image: bentmelis/tripplannerbackend:latest
     ports:
-      - "8080:80"
+      - "80:6587"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       DB_USER: root
