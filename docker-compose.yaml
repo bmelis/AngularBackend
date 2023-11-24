@@ -7,7 +7,7 @@ services:
     working_dir: /app
     image: bentmelis/tripplannerbackend:latest
     ports:
-      - "80:6587"
+      - "6587:6587"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       DB_USER: root
@@ -24,4 +24,4 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: abc123
 volumes:
- mysql_trips_data:
+ mysql_trips_data: {}
