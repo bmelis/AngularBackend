@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   your-api:
-    image: bentmelis/tripplannerbackend
+    image: bentmelis/tripplannerbackend:latest
     ports:
       - "8080:80"
     environment:
