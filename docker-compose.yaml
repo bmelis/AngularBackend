@@ -11,7 +11,6 @@ services:
      DB_USER: root
      DB_PASSWORD: abc123
      DB_SERVER: mysql-trips
-     DB_PORT: 3306
      DB_NAME: Tripplanner
     restart: always
   mysql-trips:
