@@ -14,10 +14,11 @@ var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
 var dbName = Environment.GetEnvironmentVariable("DB_NAME");
 var connectionString =
     $"Server={dbServer};Initial Catalog={dbName};User ID={dbUser};Password={dbPassword};";
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 21)); // replace with your MySQL server version
 
 Console.WriteLine(connectionString);
 builder.Services.AddDbContext<TripPlannerDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseMySql(connectionString, serverVersion));
 builder.Services.AddAuthentication().AddJwtBearer();
 
 builder.Services.AddAuthorization(options =>
