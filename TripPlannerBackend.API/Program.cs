@@ -7,7 +7,14 @@ using TripPlannerBackend.DAL.Initializer;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(Program));
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+var connectionString =
+    $"Server={dbServer};Database={dbName};User={dbUser};Password={dbPassword};";
+
 builder.Services.AddDbContext<TripPlannerDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddAuthentication().AddJwtBearer();
