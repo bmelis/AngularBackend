@@ -8,7 +8,6 @@ using TripPlannerBackend.DAL.Initializer;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(Program));
-
 var dbUser = Environment.GetEnvironmentVariable("DB_USER");
 var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
@@ -20,7 +19,6 @@ var serverVersion = new MySqlServerVersion(new Version(8, 0, 21)); // replace wi
 Console.WriteLine(connectionString);
 builder.Services.AddDbContext<TripPlannerDbContext>(options =>
     options.UseMySql(connectionString, serverVersion));
-builder.Services.AddAuthentication().AddJwtBearer();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -32,7 +30,11 @@ builder.Services.AddAuthorization(options =>
                       policy.RequireClaim("permissions", "delete:trip"));
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
+});
 builder.Services.AddSwaggerService();
 builder.Services.AddAutoMapper(typeof(Program));
 

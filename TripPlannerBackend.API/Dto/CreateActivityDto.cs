@@ -7,7 +7,7 @@
         public int? Rating { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int TripId { get; set; }
+        public int DestinationId { get; set; }
         public int ActivityTypeId { get; set; }
     }
 }

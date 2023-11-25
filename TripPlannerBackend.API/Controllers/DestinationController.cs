@@ -23,12 +23,12 @@ namespace TripPlannerBackend.API.Controllers
         [HttpPost]
         public async Task<ActionResult<GetDestinationDto>> Create([FromBody] CreateDestinationDto createDestinationDto)
         {
-            Destination destination = _mapper.Map<Destination>(createDestinationDto);
-            await _context.Destinations.AddAsync(destination);
+            Destination destinationToAdd = _mapper.Map<Destination>(createDestinationDto);
+            await _context.Destinations.AddAsync(destinationToAdd);
             await _context.SaveChangesAsync();
-            GetDestinationDto getDestinationDto = _mapper.Map<GetDestinationDto>(destination);
+            GetDestinationDto destinationToReturn = _mapper.Map<GetDestinationDto>(destinationToAdd);
 
-            return CreatedAtAction(nameof(Create), new { id = getDestinationDto.Id }, getDestinationDto);
+            return CreatedAtAction(nameof(Create), new { id = destinationToReturn.Id }, destinationToReturn);
         }
 
         [HttpGet("{tripId}")]
@@ -50,14 +50,13 @@ namespace TripPlannerBackend.API.Controllers
             await _context.SaveChangesAsync();
             GetDestinationDto getDestinationDto = _mapper.Map<GetDestinationDto>(updatedDestination);
 
-            return CreatedAtAction(nameof(Update), new { id = id }, getDestinationDto);
+            return Ok(getDestinationDto);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             Destination? destination = await _context.Destinations.FindAsync(id);
-
             if (destination == null) return NotFound();
 
             _context.Destinations.Remove(destination);

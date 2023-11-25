@@ -58,6 +58,13 @@ namespace TripPlannerBackend.DAL.Initializer
 
             /*------------------------------------------*/
 
+            context.Destinations.AddRange(
+                new Destination { Country = "Belgium", City = "Mol", TripId = 1 }
+                );
+            context.SaveChanges();
+
+            /*------------------------------------------*/
+
             context.ActivityTypes.AddRange(
                 new ActivityType { Name = "Sport" },
                 new ActivityType { Name = "Cultuur" }
@@ -67,19 +74,12 @@ namespace TripPlannerBackend.DAL.Initializer
             /*------------------------------------------*/
 
             context.Activities.AddRange(
-                new Activity { Title = "Darten", Description = "Darten in het hotel", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(2), TripId = 1, ActivityTypeId = 1 },
-                new Activity { Title = "Zwemmen", Description = "We verzamelen aan het hotel", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(1), TripId = 1, ActivityTypeId = 1 },
-                new Activity { Title = "Museum", Description = "Leerrijke uitstap naar een museum.", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(4), TripId = 1, ActivityTypeId = 2 },
-                new Activity { Title = "Darten", Description = "Darten in het hotel", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(2), TripId = 2, ActivityTypeId = 1 }
+                new Activity { Title = "Darten", Description = "Darten in het hotel", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(2), DestinationId = 1, ActivityTypeId = 1 },
+                new Activity { Title = "Zwemmen", Description = "We verzamelen aan het hotel", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(1), DestinationId = 1, ActivityTypeId = 1 },
+                new Activity { Title = "Museum", Description = "Leerrijke uitstap naar een museum.", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(4), DestinationId = 1, ActivityTypeId = 2 },
+                new Activity { Title = "Darten", Description = "Darten in het hotel", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(2), DestinationId = 1, ActivityTypeId = 1 }
                 );
-            context.SaveChanges();
-
-            /*------------------------------------------*/
-
-            context.Destinations.AddRange(
-                new Destination { Country = "Belgium", City = "Mol", TripId = 1 }
-                );
-            context.SaveChanges();
+            context.SaveChanges();           
 
             /*------------------------------------------*/
 

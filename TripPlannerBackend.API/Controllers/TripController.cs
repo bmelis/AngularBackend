@@ -20,79 +20,9 @@ namespace TripPlannerBackend.API.Controllers
             _mapper = mapper;
         }
 
-        //Get By ID
-        [HttpGet("id")]
-        public async Task<ActionResult<GetTripDto>> GetTrip(int id, [FromQuery] bool includeActivities = false, [FromQuery] bool includeDestinations = false, [FromQuery] bool includeTypes = false)
-        {
-            Trip? trip = null;
-            if (includeActivities)
-            {
-                if (includeTypes)
-                {
-                trip = await _context.Trips.Include(t => t.Activities).ThenInclude(a => a.ActivityType).SingleAsync(t => t.Id == id);
-                } else
-                {
-                    trip = await _context.Trips.Include(t => t.Activities).SingleAsync(t => t.Id == id);
-                }
-            }
-            if (includeDestinations)
-            {
-                if (includeTypes)
-                {
-                    trip = await _context.Trips.Include(t => t.Destinations).ThenInclude(d => d.Accommodations).ThenInclude(a => a.AccommodationType).SingleAsync(t => t.Id == id);
-                } else
-                {
-                    trip = await _context.Trips.Include(t => t.Destinations).ThenInclude(d => d.Accommodations).SingleAsync(t => t.Id == id);
-                }
-            }
-            if (!includeActivities && !includeDestinations)
-            {
-                trip = await _context.Trips.SingleAsync(t => t.Id == id);
-            }
-
-            if (trip == null)
-            {
-                return NotFound();
-            }
-
-            return _mapper.Map<GetTripDto>(trip);
-        }
-
-
-        //Get By ID
-        [HttpGet("email/{email}")]
-        public async Task<ActionResult<List<GetTripDto>>> GetTrip(String email)
-        {
-            var trip = await _context.Trips
-                .Include(t => t.UserTrips)
-                .Where(t => t.UserTrips.Any(ut => ut.UserId == email))
-                .ToListAsync();
-
-            if (trip == null)
-            {
-                return NotFound();
-            }
-
-            return _mapper.Map<List<GetTripDto>>(trip);
-        }
-
-        // Get ALL
-        [HttpGet]
-        public async Task<ActionResult<List<GetTripDto>>> GetTrips()
-        {
-            var trips = await _context.Trips.Include(t => t.Activities).ToListAsync();
-
-            if (trips == null)
-            {
-                return NotFound();
-            }
-
-            return _mapper.Map<List<GetTripDto>>(trips);
-        }
-
         //Insert - you have to be authenticated
         [HttpPost]
-        public async Task<ActionResult<GetTripDto>> AddTrip(CreateTripDto trip)
+        public async Task<ActionResult<GetTripDto>> Create([FromBody] CreateTripDto trip)
         {
             //We map the CreateTripDto to the Trip entity object
             Trip tripToAdd = _mapper.Map<Trip>(trip);
@@ -100,7 +30,73 @@ namespace TripPlannerBackend.API.Controllers
             await _context.SaveChangesAsync();
             GetTripDto tripToReturn = _mapper.Map<GetTripDto>(tripToAdd);
 
-            return CreatedAtAction(nameof(GetTrip), new { id = tripToReturn.Id }, tripToReturn);
+            return CreatedAtAction(nameof(Create), new { id = tripToReturn.Id }, tripToReturn);
+        }        
+
+        //Get By ID
+        [HttpGet("id")]
+        public async Task<ActionResult<GetTripDto>> GetById(int id)
+        {
+            Trip? trip = await _context.Trips
+                .Include(t => t.Destinations)
+                    .ThenInclude(d => d.Activities)
+                .Include(t => t.Destinations)
+                    .ThenInclude(d => d.Accommodations)
+                .SingleOrDefaultAsync(t => t.Id == id);            
+
+            if (trip == null) return NotFound();
+
+            return _mapper.Map<GetTripDto>(trip);
+        }
+
+
+        //Get By ID
+        [HttpGet("email/{email}")]
+        public async Task<ActionResult<List<GetTripDto>>> GetByEmail(String email)
+        {
+            var trip = await _context.Trips
+                .Include(t => t.UserTrips)
+                .Where(t => t.UserTrips.Any(ut => ut.UserId == email))
+                .ToListAsync();
+
+            if (!trip.Any()) return NotFound();
+
+            return _mapper.Map<List<GetTripDto>>(trip);
+        }
+
+        // Get ALL
+        [HttpGet]
+        public async Task<ActionResult<List<GetTripDto>>> GetAll()
+        {
+            var trips = await _context.Trips.ToListAsync();
+            if (!trips.Any()) return NotFound();
+
+            return _mapper.Map<List<GetTripDto>>(trips);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Trip>> Update(int id, [FromBody] CreateTripDto updateTripDto)
+        {
+            Trip? trip = await _context.Trips.FindAsync(id);
+            if (trip == null) return NotFound();
+
+            Trip updatedTrip = _mapper.Map(updateTripDto, trip);
+            await _context.SaveChangesAsync();
+            GetTripDto getTripDto = _mapper.Map<GetTripDto>(updatedTrip);
+
+            return Ok(getTripDto);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            Trip? trip = await _context.Trips.FindAsync(id);
+            if (trip == null) return NotFound();
+
+            _context.Trips.Remove(trip);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

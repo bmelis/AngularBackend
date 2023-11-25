@@ -24,26 +24,22 @@ namespace TripPlannerBackend.API.Controllers
         [HttpPost]
         public async Task<ActionResult<GetActivityDto>> Create([FromBody] CreateActivityDto createActivityDto)
         {
-            DAL.Entity.Activity activity = _mapper.Map<DAL.Entity.Activity>(createActivityDto);
-            await _context.Activities.AddAsync(activity);
+            DAL.Entity.Activity activityToAdd = _mapper.Map<DAL.Entity.Activity>(createActivityDto);
+            await _context.Activities.AddAsync(activityToAdd);
             await _context.SaveChangesAsync();
-            GetActivityDto getActivityDto = _mapper.Map<GetActivityDto>(activity);
+            GetActivityDto activityToReturn = _mapper.Map<GetActivityDto>(activityToAdd);
 
-            return CreatedAtAction(nameof(Create), new { id = getActivityDto.Id }, getActivityDto);
+            return CreatedAtAction(nameof(Create), new { id = activityToReturn.Id }, activityToReturn);
         }
 
         //Get By ID
-        [HttpGet("{tripId}")]
+        [HttpGet("{destinationId}")]
         //[Authorize]
         //[Authorize(Policy = "ActivityReadAccess")]
-        public async Task<ActionResult<List<GetActivityDto>>> GetActivityByTripId(int tripId)
+        public async Task<ActionResult<List<GetActivityDto>>> GetByDestinationId(int destinationId)
         {
-            List<DAL.Entity.Activity> activities = await _context.Activities.Where(a => a.TripId == tripId).ToListAsync();
-
-            if (activities == null)
-            {
-                return NotFound();
-            }
+            List<DAL.Entity.Activity> activities = await _context.Activities.Where(a => a.DestinationId == destinationId).ToListAsync();
+            if (!activities.Any()) return NotFound();
 
             return _mapper.Map<List<GetActivityDto>>(activities);
         }
@@ -52,22 +48,20 @@ namespace TripPlannerBackend.API.Controllers
         public async Task<ActionResult<GetActivityDto>> Update(int id, [FromBody] CreateActivityDto updateActivityDto)
         {
             DAL.Entity.Activity? activity = await _context.Activities.FindAsync(id);
-
             if (activity == null) return NotFound();
 
             DAL.Entity.Activity updatedActivity = _mapper.Map(updateActivityDto, activity);
             await _context.SaveChangesAsync();
             GetActivityDto getActivityDto = _mapper.Map<GetActivityDto>(updatedActivity);
 
-            return CreatedAtAction(nameof(Update), new { id = id }, getActivityDto);
+            return Ok(getActivityDto);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            DAL.Entity.Activity? activity = await _context.Activities.FindAsync(id);
-            
-            if (activity == null ) return NotFound();
+            DAL.Entity.Activity? activity = await _context.Activities.FindAsync(id);            
+            if (activity == null) return NotFound();
 
             _context.Activities.Remove(activity);
             await _context.SaveChangesAsync();

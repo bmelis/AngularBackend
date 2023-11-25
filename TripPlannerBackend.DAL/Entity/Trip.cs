@@ -14,7 +14,6 @@ namespace TripPlannerBackend.DAL.Entity
 
         public ICollection<SavedTrip> ?SavedTrips { get; set; }
         public ICollection<UserTrip> ?UserTrips { get; set; }
-        public ICollection<Activity> ?Activities { get; set; }
         public ICollection<Destination> ?Destinations { get; set; }
     }
 }

@@ -11,10 +11,10 @@ namespace TripPlannerBackend.DAL.Entity
         public int ?Rating { get; set; }
         public required DateTime StartDate { get; set; }
         public required DateTime EndDate { get; set; }
-        public int TripId { get; set; }
+        public int DestinationId { get; set; }
         public int ActivityTypeId { get; set; }
 
-        public Trip Trip { get; set; }
+        public Destination Destination { get; set; }
         public ActivityType ActivityType { get; set; }
     }
 }

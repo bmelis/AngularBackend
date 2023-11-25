@@ -13,7 +13,6 @@ namespace TripPlannerBackend.API.Dto
         public DateTime EndDate { get; set; }
         public int TripId { get; set; }
         public int ActivityTypeId { get; set; }
-
-        public GetActivityTypeDto ActivityType { get; set; }
+        public int DestinationId { get; set; }
     }
 }

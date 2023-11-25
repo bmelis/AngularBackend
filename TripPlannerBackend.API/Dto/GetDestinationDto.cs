@@ -9,7 +9,7 @@ namespace TripPlannerBackend.API.Dto
         public string City { get; set; }
         public int TripId { get; set; }
 
-        public Trip Trip { get; set; }
+        public IEnumerable<GetActivityDto> Activities { get; set; }
         public IEnumerable<GetAccommodationDto> Accommodations { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace TripPlannerBackend.DAL.Entity
         public int TripId { get; set; }
 
         public Trip Trip;
-        public ICollection<Accommodation> ?Accommodations { get; set; }
+        public ICollection<Activity>? Activities { get; set; }
+        public ICollection<Accommodation>? Accommodations { get; set; }
     }
 }

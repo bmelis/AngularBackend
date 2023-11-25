@@ -45,8 +45,8 @@ namespace TripPlannerBackend.DAL
             //    .HasForeignKey(e => e.TripId)
             //    .IsRequired();
 
-            modelBuilder.Entity<Accommodation>().ToTable("Accomadation");
-            modelBuilder.Entity<AccommodationType>().ToTable("AccomadationType");
+            modelBuilder.Entity<Accommodation>().ToTable("Accommodation");
+            modelBuilder.Entity<AccommodationType>().ToTable("AccommodationType");
             modelBuilder.Entity<Activity>().ToTable("Activity");
             modelBuilder.Entity<ActivityType>().ToTable("ActivityType");
             modelBuilder.Entity<Destination>().ToTable("Destination");

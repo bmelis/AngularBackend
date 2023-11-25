@@ -22,24 +22,19 @@ namespace TripPlannerBackend.API.Controllers
         [HttpPost]
         public async Task<ActionResult<GetAccommodationDto>> Create([FromBody] CreateAccommodationDto createAccommodationDto)
         {
-            System.Diagnostics.Debug.WriteLine(createAccommodationDto);
-            Accommodation accommodation = _mapper.Map<Accommodation>(createAccommodationDto);
-            await _context.Accommodations.AddAsync(accommodation);
+            Accommodation accommodationToAdd = _mapper.Map<Accommodation>(createAccommodationDto);
+            await _context.Accommodations.AddAsync(accommodationToAdd);
             await _context.SaveChangesAsync();
-            GetAccommodationDto getAccommodationDto = _mapper.Map<GetAccommodationDto>(accommodation);
+            GetAccommodationDto accommodationToReturn = _mapper.Map<GetAccommodationDto>(accommodationToAdd);
 
-            return CreatedAtAction(nameof(Create), new { id = getAccommodationDto.Id }, getAccommodationDto);
+            return CreatedAtAction(nameof(Create), new { id = accommodationToReturn.Id }, accommodationToReturn);
         }
 
         [HttpGet("{destinationId}")]
         public async Task<ActionResult<List<GetAccommodationDto>>> GetByDestinationId(int destinationId)
         {
             List<Accommodation> accommodations = await _context.Accommodations.Where(a => a.DestinationId == destinationId).ToListAsync();
-
-            if (accommodations == null)
-            {
-                return NotFound();
-            }
+            if (!accommodations.Any()) return NotFound();
 
             return _mapper.Map<List<GetAccommodationDto>>(accommodations);
         }
@@ -47,15 +42,14 @@ namespace TripPlannerBackend.API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<GetAccommodationDto>> Update(int id, [FromBody] CreateAccommodationDto updateAccommodationDto)
         {
-            Accommodation? accommodation = await _context.Accommodations.FindAsync(id);
+            Accommodation? existingAccommodation = await _context.Accommodations.FindAsync(id);
+            if (existingAccommodation == null) return NotFound();
 
-            if (accommodation == null) return NotFound();
-
-            Accommodation updatedAccommodation = _mapper.Map(updateAccommodationDto, accommodation);
+            Accommodation updatedAccommodation = _mapper.Map(updateAccommodationDto, existingAccommodation);
             await _context.SaveChangesAsync();
             GetAccommodationDto getAccommodationDto = _mapper.Map<GetAccommodationDto>(updatedAccommodation);
 
-            return CreatedAtAction(nameof(Update), new { id = id }, getAccommodationDto);
+            return Ok(getAccommodationDto);
         }
 
         [HttpDelete("{id}")]

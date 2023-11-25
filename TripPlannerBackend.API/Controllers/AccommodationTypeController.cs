@@ -20,74 +20,56 @@ namespace TripPlannerBackend.API.Controllers
             _mapper = mapper;
         }
 
+        // create a new accommodationtype
+        [HttpPost]
+        public async Task<ActionResult> Create([FromBody] CreateAccommodationTypeDto createAccommodationTypeDto)
+        {
+            AccommodationType accommodationTypeToAdd = _mapper.Map<AccommodationType>(createAccommodationTypeDto);
+            _context.AccommodationTypes.Add(accommodationTypeToAdd);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(Create), new { });
+        }
+
         // get accomidation type by id
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetAccommodationTypeDto>> GetAccommodationType(int id)
+        public async Task<ActionResult<GetAccommodationTypeDto>> GetById(int id)
         {
-            var accommodationType = await _context.AccommodationTypes.SingleAsync(a => a.Id == id);
-
-            if (accommodationType == null)
-            {
-                return NotFound();
-            }
+            var accommodationType = await _context.AccommodationTypes.FindAsync(id);
+            if (accommodationType == null) return NotFound();
 
             return _mapper.Map<GetAccommodationTypeDto>(accommodationType);
         }
 
         // get all accommodationtypes
         [HttpGet]
-        public async Task<ActionResult<List<GetAccommodationTypeDto>>> GetAccommodationTypes()
+        public async Task<ActionResult<List<GetAccommodationTypeDto>>> GetAll()
         {
             var accommodationTypes = await _context.AccommodationTypes.ToListAsync();
-
-            if (accommodationTypes == null)
-            {
-                return NotFound();
-            }
+            if (!accommodationTypes.Any()) return NotFound();
 
             return _mapper.Map<List<GetAccommodationTypeDto>>(accommodationTypes);
-        }
-
-        // create a new accommodationtype
-        [HttpPost]
-        public async Task<ActionResult<GetAccommodationTypeDto>> AddAccommodationType(CreateAccommodationTypeDto accommodationType)
-        {
-            AccommodationType accommodationTypeToAdd = _mapper.Map<AccommodationType>(accommodationType);
-            _context.AccommodationTypes.Add(accommodationTypeToAdd);
-            await _context.SaveChangesAsync();
-            GetAccommodationTypeDto accommodationTypeToReturn = _mapper.Map<GetAccommodationTypeDto>(accommodationTypeToAdd);
-
-            return CreatedAtAction(nameof(GetAccommodationType), new { id = accommodationTypeToReturn.Id }, accommodationTypeToReturn);
-        }
+        }        
 
         // update an existing accommodationtype
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAccommodationType(int id, UpdateAccommodationTypeDto updateAccommodationTypeDto)
+        public async Task<ActionResult> Update(int id, [FromBody] UpdateAccommodationTypeDto updateAccommodationTypeDto)
         {
-            var accommodationType = await _context.AccommodationTypes.SingleAsync(a => a.Id == id);
-
-            if (accommodationType == null)
-            {
-                return NotFound();
-            }
+            var accommodationType = await _context.AccommodationTypes.FindAsync(id);
+            if (accommodationType == null) return NotFound();
 
             _mapper.Map(updateAccommodationTypeDto, accommodationType);
-
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         // delete an existing accommodationtype
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAccommodationType(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var accommodationType = await _context.AccommodationTypes.SingleAsync(a => a.Id == id);
-
-            if (accommodationType == null)
-            {
-                return NotFound();
-            }
+            var accommodationType = await _context.AccommodationTypes.FindAsync(id);
+            if (accommodationType == null) return NotFound();
 
             _context.AccommodationTypes.Remove(accommodationType);
             await _context.SaveChangesAsync();
