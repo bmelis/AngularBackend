@@ -13,7 +13,7 @@ var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
 var dbName = Environment.GetEnvironmentVariable("DB_NAME");
 var connectionString =
-    $"Data Source=${dbServer};Initial Catalog=TripPlannerBackend.API_db;User ID={dbUser};Password={dbPassword};Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+    $"Data Source=${dbServer};Initial Catalog={dbName};User ID={dbUser};Password={dbPassword};Connect Timeout=60;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
 Console.WriteLine(connectionString);
 builder.Services.AddDbContext<TripPlannerDbContext>(options =>
