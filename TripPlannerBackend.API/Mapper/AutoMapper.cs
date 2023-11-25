@@ -15,17 +15,27 @@ namespace TripPlannerBackend.API.Mapper
             CreateMap<UserTrip, GetUserTripDto>();
             CreateMap<CreateTripDto, Trip>();
 
-            CreateMap<GetAccomodationTypeDto, AccomodationType>();
-            CreateMap<AccomodationType, GetAccomodationTypeDto>();
-            CreateMap<CreateAccomodationTypeDto, AccomodationType>();
-            CreateMap<UpdateAccomodationTypeDto, AccomodationType>();
-            CreateMap<AccomodationType, UpdateAccomodationTypeDto>();
+            CreateMap<GetActivityDto, Activity>();
+            CreateMap<Activity, GetActivityDto>();
+            CreateMap<CreateActivityDto, Activity>();
 
             CreateMap<GetActivityTypeDto, ActivityType>();
             CreateMap<ActivityType, GetActivityTypeDto>();
             CreateMap<CreateActivityTypeDto, ActivityType>();
-            CreateMap<PutActivityTypeDto, ActivityType>();
-            CreateMap<GetActivityTypeDto, ActivityType>();
+            CreateMap<UpdateActivityTypeDto, ActivityType>();
+
+            CreateMap<GetDestinationDto, Destination>();
+            CreateMap<Destination, GetDestinationDto>();
+            CreateMap<CreateDestinationDto, Destination>();
+
+            CreateMap<GetAccommodationDto, Accommodation>();
+            CreateMap<Accommodation, GetAccommodationDto>();
+            CreateMap<CreateAccommodationDto, Accommodation>();
+
+            CreateMap<GetAccommodationTypeDto, AccommodationType>();
+            CreateMap<AccommodationType, GetAccommodationTypeDto>();
+            CreateMap<CreateAccommodationTypeDto, AccommodationType>();
+            CreateMap<UpdateAccommodationTypeDto, AccommodationType>();
         }
     }
 }

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TripPlannerBackend.DAL.Entity
 {
-    public class Accomodation
+    public class Accommodation
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -13,9 +13,9 @@ namespace TripPlannerBackend.DAL.Entity
         public required DateTime StartDate { get; set; }
         public required DateTime EndDate { get; set; }
         public int DestinationId { get; set; }
-        public int AccomadationTypeId { get; set; }
+        public int AccommodationTypeId { get; set; }
 
         public Destination Destination { get; set; }
-        public AccomodationType AccomodationType { get; set; }
+        public AccommodationType AccommodationType { get; set; }
     }
 }

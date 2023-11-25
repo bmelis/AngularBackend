@@ -10,7 +10,7 @@ namespace TripPlannerBackend.DAL.Entity
         public required string City { get; set; }
         public int TripId { get; set; }
 
-        public Trip trip;
-        public ICollection<Accomodation> ?Accomadations { get; set; }
+        public Trip Trip;
+        public ICollection<Accommodation> ?Accommodations { get; set; }
     }
 }

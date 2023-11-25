@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TripPlannerBackend.API.Dto;
 using TripPlannerBackend.DAL;
 using TripPlannerBackend.DAL.Entity;
@@ -20,10 +21,34 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         //Get By ID
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetTripDto>> GetTrip(int id)
+        [HttpGet("id")]
+        public async Task<ActionResult<GetTripDto>> GetTrip(int id, [FromQuery] bool includeActivities = false, [FromQuery] bool includeDestinations = false, [FromQuery] bool includeTypes = false)
         {
-            var trip = await _context.Trips.SingleAsync(t => t.Id == id);
+            Trip? trip = null;
+            if (includeActivities)
+            {
+                if (includeTypes)
+                {
+                trip = await _context.Trips.Include(t => t.Activities).ThenInclude(a => a.ActivityType).SingleAsync(t => t.Id == id);
+                } else
+                {
+                    trip = await _context.Trips.Include(t => t.Activities).SingleAsync(t => t.Id == id);
+                }
+            }
+            if (includeDestinations)
+            {
+                if (includeTypes)
+                {
+                    trip = await _context.Trips.Include(t => t.Destinations).ThenInclude(d => d.Accommodations).ThenInclude(a => a.AccommodationType).SingleAsync(t => t.Id == id);
+                } else
+                {
+                    trip = await _context.Trips.Include(t => t.Destinations).ThenInclude(d => d.Accommodations).SingleAsync(t => t.Id == id);
+                }
+            }
+            if (!includeActivities && !includeDestinations)
+            {
+                trip = await _context.Trips.SingleAsync(t => t.Id == id);
+            }
 
             if (trip == null)
             {

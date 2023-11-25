@@ -13,8 +13,8 @@ namespace TripPlannerBackend.DAL
         public TripPlannerDbContext(DbContextOptions<TripPlannerDbContext> options) : base(options)
         {
         }
-        public DbSet<Accomodation> Accomadations => Set<Accomodation>();
-        public DbSet<AccomodationType> AccomodationTypes => Set<AccomodationType>();
+        public DbSet<Accommodation> Accommodations => Set<Accommodation>();
+        public DbSet<AccommodationType> AccommodationTypes => Set<AccommodationType>();
         public DbSet<Activity> Activities => Set<Activity>();
         public DbSet<ActivityType> ActivityTypes => Set<ActivityType>();
         public DbSet<Destination> Destinations => Set<Destination>();
@@ -45,8 +45,8 @@ namespace TripPlannerBackend.DAL
             //    .HasForeignKey(e => e.TripId)
             //    .IsRequired();
 
-            modelBuilder.Entity<Accomodation>().ToTable("Accomadation");
-            modelBuilder.Entity<AccomodationType>().ToTable("AccomadationType");
+            modelBuilder.Entity<Accommodation>().ToTable("Accomadation");
+            modelBuilder.Entity<AccommodationType>().ToTable("AccomadationType");
             modelBuilder.Entity<Activity>().ToTable("Activity");
             modelBuilder.Entity<ActivityType>().ToTable("ActivityType");
             modelBuilder.Entity<Destination>().ToTable("Destination");

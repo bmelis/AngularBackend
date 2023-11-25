@@ -83,15 +83,16 @@ namespace TripPlannerBackend.DAL.Initializer
 
             /*------------------------------------------*/
 
-            context.AccomodationTypes.AddRange(
-                new AccomodationType { Name = "bungaloo" }
+            context.AccommodationTypes.AddRange(
+                new AccommodationType { Name = "Bungaloo" },
+                new AccommodationType { Name = "Hotel" }
                 );
             context.SaveChanges();
 
             /*------------------------------------------*/
 
-            context.Accomadations.AddRange(
-                new Accomodation { Name = "beunhaas bungaloo", Street = "Haag", HouseNumber = "65", StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(7), DestinationId = 1, AccomadationTypeId = 1 }
+            context.Accommodations.AddRange(
+                new Accommodation { Name = "beunhaas bungaloo", Street = "Haag", HouseNumber = "65", StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(7), DestinationId = 1, AccommodationTypeId = 1 }
                 );
             context.SaveChanges();
         }

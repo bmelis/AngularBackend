@@ -61,7 +61,7 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<GetActivityTypeDto>> UpdateActivityType(int id, PutActivityTypeDto updateActivityType)
+        public async Task<ActionResult<GetActivityTypeDto>> UpdateActivityType(int id, UpdateActivityTypeDto updateActivityType)
         {
             var existingActivityType = await _context.ActivityTypes.FindAsync(id);
 

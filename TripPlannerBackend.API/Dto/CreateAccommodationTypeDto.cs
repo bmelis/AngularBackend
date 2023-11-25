@@ -1,6 +1,6 @@
 ﻿namespace TripPlannerBackend.API.Dto
 {
-    public class PutActivityTypeDto
+    public class CreateAccommodationTypeDto
     {
         public string Name { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿namespace TripPlannerBackend.API.Dto
 {
-    public class UpdateAccomodationTypeDto
+    public class UpdateAccommodationTypeDto
     {
         public string Name { get; set; }
     }

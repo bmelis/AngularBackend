@@ -1,4 +1,4 @@
-﻿namespace TripPlannerBackend.API.Dto
+namespace TripPlannerBackend.API.Dto
 {
     public class GetActivityTypeDto
     {
