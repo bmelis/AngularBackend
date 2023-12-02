@@ -10,10 +10,10 @@ services:
       - "80:80"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      DB_USER: ${{ DB_USER }}
-      DB_PASSWORD: ${{ DB_PASSWORD }}
-      DB_SERVER: ${{ DB_SERVER }}
-      DB_NAME: ${{ DB_TABLE }}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_SERVER: ${DB_SERVER}
+      DB_NAME: ${DB_NAME}
     restart: always
   mysql-trips:
     image: mysql:latest
@@ -22,6 +22,6 @@ services:
     volumes:
       - mysql_trips_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${{ DB_PASSWORD }}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
 volumes:
  mysql_trips_data: {}
