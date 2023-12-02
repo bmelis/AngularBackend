@@ -10,10 +10,10 @@ services:
       - "80:80"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      DB_USER: root
-      DB_PASSWORD: abc123
-      DB_SERVER: mysql-trips
-      DB_NAME: TripPlanner
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_SERVER: ${{ secrets.DB_SERVER }}
+      DB_NAME: ${{ secrets.DB_TABLE }}
     restart: always
   mysql-trips:
     image: mysql:latest
@@ -22,6 +22,6 @@ services:
     volumes:
       - mysql_trips_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: abc123
+      MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
 volumes:
  mysql_trips_data: {}
