@@ -21,7 +21,7 @@ builder.Services.AddAuthentication().AddJwtBearer();
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("getTrips", policy =>
+    options.AddPolicy("adminRights", policy =>
                       policy.RequireClaim("permissions", "admin:crud"));
 });
 

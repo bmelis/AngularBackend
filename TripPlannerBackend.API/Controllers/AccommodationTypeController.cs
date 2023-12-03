@@ -22,7 +22,7 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // create a new accommodationtype
-        [Authorize]
+        [Authorize(Policy = "adminRights")]
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateAccommodationTypeDto createAccommodationTypeDto)
         {
@@ -34,7 +34,7 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // get accomidation type by id
-        [Authorize]
+        [Authorize(Policy = "adminRights")]
         [HttpGet("{id}")]
         public async Task<ActionResult<GetAccommodationTypeDto>> GetById([FromRoute] int id)
         {
@@ -45,7 +45,7 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // get all accommodationtypes
-        [Authorize]
+        [Authorize(Policy = "adminRights")]
         [HttpGet]
         public async Task<ActionResult<List<GetAccommodationTypeDto>>> GetAll()
         {
@@ -56,7 +56,7 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // update an existing accommodationtype
-        [Authorize]
+        [Authorize(Policy = "adminRights")]
         [HttpPut("{id}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateAccommodationTypeDto updateAccommodationTypeDto)
         {
@@ -70,7 +70,7 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // delete an existing accommodationtype
-        [Authorize]
+        [Authorize(Policy = "adminRights")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
