@@ -19,8 +19,7 @@ namespace TripPlannerBackend.API.Controllers
             _context = context;
             _mapper = mapper;
         }
-        [Authorize]
-        //Insert - you have to be authenticated
+        [Authorize(Policy = "adminRights")]
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateActivityTypeDto createActivityTypeDto)
         {
@@ -31,7 +30,7 @@ namespace TripPlannerBackend.API.Controllers
 
             return CreatedAtAction(nameof(Create), new { });
         }
-        [Authorize]
+        [Authorize(Policy = "adminRights")]
         [HttpGet("{id}")]
         public async Task<ActionResult<GetActivityTypeDto>> GetById(int id)
         {
@@ -40,7 +39,7 @@ namespace TripPlannerBackend.API.Controllers
 
             return _mapper.Map<GetActivityTypeDto>(activityType);
         }
-        [Authorize]
+        [Authorize(Policy = "adminRights")]
         [HttpGet]
         public async Task<ActionResult<List<GetActivityTypeDto>>> GetAll()
         {
@@ -49,8 +48,8 @@ namespace TripPlannerBackend.API.Controllers
 
             return _mapper.Map<List<GetActivityTypeDto>>(activityTypes);
         }
-        
-        [Authorize]
+
+        [Authorize(Policy = "adminRights")]
         [HttpPut("{id}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateActivityTypeDto updateActivityType)
         {
@@ -63,7 +62,7 @@ namespace TripPlannerBackend.API.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [Authorize(Policy = "adminRights")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<GetActivityTypeDto>> Delete([FromRoute] int id)
         {
