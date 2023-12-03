@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TripPlannerBackend.API.Dto;
@@ -18,7 +19,7 @@ namespace TripPlannerBackend.API.Controllers
             _context = context;
             _mapper = mapper;
         }
-
+        [Authorize]
         //Insert - you have to be authenticated
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateActivityTypeDto createActivityTypeDto)
@@ -30,8 +31,7 @@ namespace TripPlannerBackend.API.Controllers
 
             return CreatedAtAction(nameof(Create), new { });
         }
-
-        //Get By ID
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<GetActivityTypeDto>> GetById(int id)
         {
@@ -40,8 +40,7 @@ namespace TripPlannerBackend.API.Controllers
 
             return _mapper.Map<GetActivityTypeDto>(activityType);
         }
-
-        // Get ALL
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<GetActivityTypeDto>>> GetAll()
         {
@@ -50,9 +49,10 @@ namespace TripPlannerBackend.API.Controllers
 
             return _mapper.Map<List<GetActivityTypeDto>>(activityTypes);
         }
-
+        
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] UpdateActivityTypeDto updateActivityType)
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateActivityTypeDto updateActivityType)
         {
             var existingActivityType = await _context.ActivityTypes.FindAsync(id);
             if (existingActivityType == null) return NotFound();
@@ -63,8 +63,9 @@ namespace TripPlannerBackend.API.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<GetActivityTypeDto>> Delete(int id)
+        public async Task<ActionResult<GetActivityTypeDto>> Delete([FromRoute] int id)
         {
             var existingActivityType = await _context.ActivityTypes.FindAsync(id);
             if (existingActivityType == null) return NotFound();

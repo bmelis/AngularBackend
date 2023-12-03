@@ -8,6 +8,7 @@
         public bool IsPublic { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public string? UserRole { get; set; }
 
         public IEnumerable<GetDestinationDto> Destinations { get; set; }
     }

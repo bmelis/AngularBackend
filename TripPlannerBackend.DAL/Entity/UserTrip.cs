@@ -5,7 +5,7 @@ namespace TripPlannerBackend.DAL.Entity
     public class UserTrip
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int UserTripId { get; set; }
+        public int Id { get; set; }
         public string UserId { get; set; }
         public int TripId { get; set; }
         public int RoleId { get; set; }
