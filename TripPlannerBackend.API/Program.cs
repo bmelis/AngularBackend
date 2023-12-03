@@ -38,7 +38,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            builder.WithOrigins("http://localhost:4200", "https://angular-23-team-02-git-bm-hosting-branch-bmelis-projects.vercel.app")
+            builder.WithOrigins("http://localhost:4200", "https://angular-23-team-02-git-bm-hosting-branch-bmelis-projects.vercel.app", "https://angular-23-team-02.vercel.app")
                    .AllowAnyHeader()
                    .AllowAnyMethod();
         });
