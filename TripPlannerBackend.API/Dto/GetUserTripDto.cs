@@ -2,10 +2,9 @@
 {
     public class GetUserTripDto
     {   
-        public int UserTripId { get; set; }
+        public int Id { get; set; }
         public String UserId { get; set; }
         public int TripId { get; set; }
         public int RoleId { get; set; }
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TripPlannerBackend.API.Dto;
@@ -21,6 +22,7 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // create a new accommodationtype
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateAccommodationTypeDto createAccommodationTypeDto)
         {
@@ -32,8 +34,9 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // get accomidation type by id
+        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetAccommodationTypeDto>> GetById(int id)
+        public async Task<ActionResult<GetAccommodationTypeDto>> GetById([FromRoute] int id)
         {
             var accommodationType = await _context.AccommodationTypes.FindAsync(id);
             if (accommodationType == null) return NotFound();
@@ -42,6 +45,7 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // get all accommodationtypes
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<GetAccommodationTypeDto>>> GetAll()
         {
@@ -49,11 +53,12 @@ namespace TripPlannerBackend.API.Controllers
             if (!accommodationTypes.Any()) return NotFound();
 
             return _mapper.Map<List<GetAccommodationTypeDto>>(accommodationTypes);
-        }        
+        }
 
         // update an existing accommodationtype
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] UpdateAccommodationTypeDto updateAccommodationTypeDto)
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UpdateAccommodationTypeDto updateAccommodationTypeDto)
         {
             var accommodationType = await _context.AccommodationTypes.FindAsync(id);
             if (accommodationType == null) return NotFound();
@@ -65,8 +70,9 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // delete an existing accommodationtype
+        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromRoute] int id)
         {
             var accommodationType = await _context.AccommodationTypes.FindAsync(id);
             if (accommodationType == null) return NotFound();

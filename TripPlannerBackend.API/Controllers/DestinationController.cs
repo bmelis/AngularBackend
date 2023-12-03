@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using TripPlannerBackend.API.Dto;
+using TripPlannerBackend.API.Services;
 using TripPlannerBackend.DAL;
 using TripPlannerBackend.DAL.Entity;
 
@@ -14,15 +17,21 @@ namespace TripPlannerBackend.API.Controllers
     {
         private readonly TripPlannerDbContext _context;
         private readonly IMapper _mapper;
+        private TripAuthorizationService tripAuthorizationService;
         public DestinationController(TripPlannerDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+            tripAuthorizationService = new TripAuthorizationService(context);
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<GetDestinationDto>> Create([FromBody] CreateDestinationDto createDestinationDto)
+        public async Task<ActionResult<GetDestinationDto>> Create([FromBody] CreateDestinationDto createDestinationDto, [FromQuery] int tripId)
         {
+            string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            if (await tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
+
             Destination destinationToAdd = _mapper.Map<Destination>(createDestinationDto);
             await _context.Destinations.AddAsync(destinationToAdd);
             await _context.SaveChangesAsync();
@@ -31,18 +40,24 @@ namespace TripPlannerBackend.API.Controllers
             return CreatedAtAction(nameof(Create), new { id = destinationToReturn.Id }, destinationToReturn);
         }
 
-        [HttpGet("{tripId}")]
-        public async Task<ActionResult<List<GetDestinationDto>>> GetByTripId(int tripId)
+        [Authorize]
+        [HttpGet("trip/{tripId}")]
+        public async Task<ActionResult<List<GetDestinationDto>>> GetByTripId([FromRoute] int tripId)
         {
+            string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
             List<Destination> destinations = await _context.Destinations.Where(d => d.TripId == tripId).ToListAsync();
             if (destinations == null) return NotFound();
 
             return _mapper.Map<List<GetDestinationDto>>(destinations);
         }
-
+        
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<ActionResult<GetDestinationDto>> Update(int id, [FromBody] CreateDestinationDto updateDestinationDto)
+        public async Task<ActionResult<GetDestinationDto>> Update([FromRoute] int id, [FromBody] CreateDestinationDto updateDestinationDto, [FromQuery] int tripId)
         {
+            string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            if (await tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
+
             Destination? destination = await _context.Destinations.FindAsync(id);
             if (destination == null) return NotFound();
 
@@ -53,9 +68,13 @@ namespace TripPlannerBackend.API.Controllers
             return Ok(getDestinationDto);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromRoute] int id, [FromQuery] int tripId)
         {
+            string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            if (await tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
+
             Destination? destination = await _context.Destinations.FindAsync(id);
             if (destination == null) return NotFound();
 
