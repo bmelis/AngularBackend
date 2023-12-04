@@ -45,7 +45,7 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         // get all accommodationtypes
-        [Authorize(Policy = "adminRights")]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<GetAccommodationTypeDto>>> GetAll()
         {

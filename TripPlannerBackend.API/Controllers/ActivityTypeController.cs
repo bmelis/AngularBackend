@@ -39,7 +39,7 @@ namespace TripPlannerBackend.API.Controllers
 
             return _mapper.Map<GetActivityTypeDto>(activityType);
         }
-        [Authorize(Policy = "adminRights")]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<GetActivityTypeDto>>> GetAll()
         {

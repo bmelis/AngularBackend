@@ -8,6 +8,7 @@ namespace TripPlannerBackend.DAL.Entity
         public int Id { get; set; }
         public required string Country { get; set; }
         public required string City { get; set; }
+        public string? ImageUrl {  get; set; }
         public int TripId { get; set; }
 
         public Trip Trip;

@@ -7,6 +7,7 @@ namespace TripPlannerBackend.API.Dto
         public int Id { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
+        public string? ImageUrl { get; set; }
         public int TripId { get; set; }
 
         public IEnumerable<GetActivityDto> Activities { get; set; }
