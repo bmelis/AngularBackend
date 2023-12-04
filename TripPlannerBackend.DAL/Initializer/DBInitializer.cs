@@ -56,16 +56,17 @@ namespace TripPlannerBackend.DAL.Initializer
                 new UserTrip { UserId = "xeyocab737@dpsols.com", TripId = 1, RoleId = 2 },
                 new UserTrip { UserId = "seppem2@gmail.com", TripId = 1, RoleId = 3 },
                 new UserTrip { UserId = "xeyocab737@dpsols.com", TripId = 2, RoleId = 1 },
-                new UserTrip { UserId = "peetersbrent@gmail.com", TripId = 1, RoleId = 2 }
+                new UserTrip { UserId = "peetersbrent@gmail.com", TripId = 1, RoleId = 2 },
+                new UserTrip { UserId = "michielvanloy2003@gmail.com", TripId = 1, RoleId = 2 }
                 );
             context.SaveChanges();
 
             /*------------------------------------------*/
 
             context.Destinations.AddRange(
-                new Destination { Country = "Belgium", City = "Mol", TripId = 1 },
-                new Destination { Country = "Belgium", City = "Geel", TripId = 1 },
-                new Destination { Country = "Belgium", City = "Turnhout", TripId = 1 }
+                new Destination { Country = "België", City = "Mol", ImageUrl = "/assets/images/trip-placeholders/1.png", TripId = 1 },
+                new Destination { Country = "België", City = "Geel", ImageUrl = "/assets/images/trip-placeholders/2.png", TripId = 1 },
+                new Destination { Country = "Nederland", City = "Amsterdam", ImageUrl = "/assets/images/trip-placeholders/2.png", TripId = 1 }
                 );
             context.SaveChanges();
 
@@ -100,8 +101,7 @@ namespace TripPlannerBackend.DAL.Initializer
 
             context.Accommodations.AddRange(
                 new Accommodation { Name = "bungaloo", Street = "Haag", HouseNumber = "65", StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(7), DestinationId = 1, AccommodationTypeId = 1 },
-                new Accommodation { Name = "Hotel in Geel", Street = "langestraat", HouseNumber = "12", StartDate = new DateTime(2024, 10, 30, 12, 0, 0), EndDate = new DateTime(2024, 11, 2, 12, 0, 0), DestinationId = 2, AccommodationTypeId = 2 },
-                new Accommodation { Name = "Hotel in Turnhout", Street = "kortestraat", HouseNumber = "13", StartDate = new DateTime(2023, 12, 10, 12, 0, 0), EndDate = new DateTime(2023, 12, 12, 12, 0, 0), DestinationId = 3, AccommodationTypeId = 2 }
+                new Accommodation { Name = "Hotel in Geel", Street = "langestraat", HouseNumber = "12", StartDate = new DateTime(2024, 10, 30, 12, 0, 0), EndDate = new DateTime(2024, 11, 2, 12, 0, 0), DestinationId = 2, AccommodationTypeId = 2 }
                 );
             context.SaveChanges();
         }

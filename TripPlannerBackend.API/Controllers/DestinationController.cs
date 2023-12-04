@@ -69,6 +69,26 @@ namespace TripPlannerBackend.API.Controllers
         }
 
         [Authorize]
+        [HttpPatch("{id}/image")]
+        public async Task<ActionResult> UpdateImageUrl([FromRoute] int id, [FromQuery] int tripId, [FromBody] string imageUrl)
+        {
+            string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+            if (await tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
+
+            Destination? destination = await _context.Destinations.FindAsync(id);
+            if (destination == null) return NotFound();
+
+            CreateDestinationDto updateDestinationDto = _mapper.Map<CreateDestinationDto>(destination);
+            updateDestinationDto.ImageUrl = imageUrl;
+
+            Destination updatedDestination = _mapper.Map(updateDestinationDto, destination);
+            await _context.SaveChangesAsync();
+            GetDestinationDto getDestinationDto = _mapper.Map<GetDestinationDto>(updatedDestination);
+
+            return Ok(getDestinationDto);
+        }
+
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id, [FromQuery] int tripId)
         {
