@@ -49,7 +49,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<TripAuthorizationService>();
-builder.Services.AddScoped<PublicImageManagementService>();
 
 var app = builder.Build();
 app.UseCors("AllowSpecificOrigin");

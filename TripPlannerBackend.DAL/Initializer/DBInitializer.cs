@@ -64,9 +64,9 @@ namespace TripPlannerBackend.DAL.Initializer
             /*------------------------------------------*/
 
             context.Destinations.AddRange(
-                new Destination { Country = "België", City = "Mol", ImageUrl = "https://your-api-bmelis.cloud.okteto.net:6587/images/placeholders/1.webp", TripId = 1 },
-                new Destination { Country = "België", City = "Geel", ImageUrl = "https://your-api-bmelis.cloud.okteto.net:6587/images/placeholders/2.webp", TripId = 1 },
-                new Destination { Country = "Nederland", City = "Amsterdam", ImageUrl = "https://your-api-bmelis.cloud.okteto.net:6587/images/placeholders/2.webp", TripId = 1 }
+                new Destination { Country = "België", City = "Mol", ImageUrl = "http://localhost:4200/assets/images/placeholders/1.webp", TripId = 1 },
+                new Destination { Country = "België", City = "Geel", ImageUrl = "http://localhost:4200/assets/images/placeholders/2.webp", TripId = 1 },
+                new Destination { Country = "Nederland", City = "Amsterdam", ImageUrl = "http://localhost:4200/assets/images/placeholders/2.webp", TripId = 1 }
                 );
             context.SaveChanges();
 
