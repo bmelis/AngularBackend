@@ -64,9 +64,9 @@ namespace TripPlannerBackend.DAL.Initializer
             /*------------------------------------------*/
 
             context.Destinations.AddRange(
-                new Destination { Country = "België", City = "Mol", ImageUrl = "http://localhost:4200/assets/images/placeholders/1.webp", TripId = 1 },
-                new Destination { Country = "België", City = "Geel", ImageUrl = "http://localhost:4200/assets/images/placeholders/2.webp", TripId = 1 },
-                new Destination { Country = "Nederland", City = "Amsterdam", ImageUrl = "http://localhost:4200/assets/images/placeholders/2.webp", TripId = 1 }
+                new Destination { Country = "België", City = "Mol", ImageUrl = "https://angular-23-team-02.vercel.app/assets/images/placeholders/1.webp", TripId = 1 },
+                new Destination { Country = "België", City = "Geel", ImageUrl = "https://angular-23-team-02.vercel.app/assets/images/placeholders/2.webp", TripId = 1 },
+                new Destination { Country = "Nederland", City = "Amsterdam", ImageUrl = "https://angular-23-team-02.vercel.app/assets/images/placeholders/2.webp", TripId = 1 }
                 );
             context.SaveChanges();
 

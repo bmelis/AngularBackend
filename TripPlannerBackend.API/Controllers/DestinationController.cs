@@ -21,7 +21,7 @@ namespace TripPlannerBackend.API.Controllers
             _context = context;
             _mapper = mapper;
             _tripAuthorizationService = tripAuthorizationService;
-            _angularUrl = "http://localhost:4200";
+            _angularUrl = "https://angular-23-team-02.vercel.app/";
         }
 
         [Authorize]
