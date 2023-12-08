@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using TripPlannerBackend.API.Services;
 using TripPlannerBackend.DAL;
 using TripPlannerBackend.DAL.Initializer;
 
@@ -43,6 +44,9 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod();
         });
 });
+
+builder.Services.AddScoped<TripAuthorizationService>();
+builder.Services.AddScoped<PublicImageManagementService>();
 
 var app = builder.Build();
 app.UseCors("AllowSpecificOrigin");

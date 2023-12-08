@@ -15,20 +15,24 @@ namespace TripPlannerBackend.API.Controllers
     {
         private readonly TripPlannerDbContext _context;
         private readonly IMapper _mapper;
-        private TripAuthorizationService tripAuthorizationService;
-        public AccommodationController(TripPlannerDbContext context, IMapper mapper)
+        private readonly TripAuthorizationService _tripAuthorizationService;
+        public AccommodationController(TripPlannerDbContext context, IMapper mapper, TripAuthorizationService tripAuthorizationService)
         {
             _context = context;
             _mapper = mapper;
-            tripAuthorizationService = new TripAuthorizationService(context);
+            _tripAuthorizationService = tripAuthorizationService;
         }
 
-        [HttpPost]
         [Authorize]
+        [HttpPost]
         public async Task<ActionResult<GetAccommodationDto>> Create([FromBody] CreateAccommodationDto createAccommodationDto, [FromQuery] int tripId)
         {
             string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (await tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
+            if (await _tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
+
+            DateTime accEndDate = createAccommodationDto.EndDate;
+            DateTime endDate = new DateTime(accEndDate.Year, accEndDate.Month, accEndDate.Day, 23, 59, 59);
+            createAccommodationDto.EndDate = endDate;
 
             Accommodation accommodationToAdd = _mapper.Map<Accommodation>(createAccommodationDto);
             await _context.Accommodations.AddAsync(accommodationToAdd);
@@ -38,29 +42,32 @@ namespace TripPlannerBackend.API.Controllers
             return CreatedAtAction(nameof(Create), new { id = accommodationToReturn.Id }, accommodationToReturn);
         }
 
-        [HttpGet("{destinationId}")]
         [Authorize]
         [HttpGet("destination/{destinationId}")]
         public async Task<ActionResult<List<GetAccommodationDto>>> GetByDestinationId([FromRoute] int destinationId, [FromQuery] int tripId)
         {
             string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (await tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
+            if (await _tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
 
             List<Accommodation> accommodations = await _context.Accommodations.Where(a => a.DestinationId == destinationId).ToListAsync();
-            if (!accommodations.Any()) return NotFound();
+            if (!accommodations.Any()) return Ok("er zijn nog geen accomodaties");
 
             return _mapper.Map<List<GetAccommodationDto>>(accommodations);
         }
 
-        [HttpPut("{id}")]
         [Authorize]
+        [HttpPut("{id}")]
         public async Task<ActionResult<GetAccommodationDto>> Update([FromRoute] int id, [FromBody] CreateAccommodationDto updateAccommodationDto, [FromQuery] int tripId)
         {
             string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (await tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
+            if (await _tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
 
             Accommodation? existingAccommodation = await _context.Accommodations.FindAsync(id);
             if (existingAccommodation == null) return NotFound();
+
+            DateTime accEndDate = updateAccommodationDto.EndDate;
+            DateTime endDate = new DateTime(accEndDate.Year, accEndDate.Month, accEndDate.Day, 23, 59, 59);
+            updateAccommodationDto.EndDate = endDate;
 
             Accommodation updatedAccommodation = _mapper.Map(updateAccommodationDto, existingAccommodation);
             await _context.SaveChangesAsync();
@@ -69,15 +76,33 @@ namespace TripPlannerBackend.API.Controllers
             return Ok(getAccommodationDto);
         }
 
-        [HttpDelete("{id}")]
         [Authorize]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id, [FromQuery] int tripId)
         {
             string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (await tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
+            if (await _tripAuthorizationService.IsParticipantOrNull(tripId, email)) return StatusCode(403);
 
             Accommodation? accommodation = await _context.Accommodations.FindAsync(id);
             if (accommodation == null) return NotFound();
+
+            // Delete activities 'linked' to accommodation
+            DateTime startDate = accommodation.StartDate;
+            DateTime endDate = accommodation.EndDate;
+            List<Activity> destinationActivities = _context.Activities.Where(a => a.DestinationId == accommodation.DestinationId).ToList();
+            List<Activity> filteredActivities = destinationActivities
+                .Where(a => 
+                (a.StartDate >= startDate && a.StartDate <= endDate) 
+                && 
+                (a.EndDate >= startDate && a.EndDate <= endDate)).ToList();
+
+            if (filteredActivities.Count > 0)
+            {
+                foreach (Activity activity in filteredActivities)
+                {
+                    _context.Activities.Remove(activity);
+                }
+            }
 
             _context.Accommodations.Remove(accommodation);
             await _context.SaveChangesAsync();

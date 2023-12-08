@@ -25,25 +25,37 @@ namespace TripPlannerBackend.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.Entity<User>()
-            //     .HasMany(e => e.SavedTrips)
-            //     .WithOne(e => e.User)
-            //     .IsRequired();
-            // modelBuilder.Entity<SavedTrip>()
-            //     .HasOne(e => e.User)
-            //     .WithMany(e => e.SavedTrips);
+            modelBuilder.Entity<Trip>()
+                .HasMany(t => t.Destinations)
+                .WithOne(d => d.Trip)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // modelBuilder.Entity<Trip>()
-            //    .HasMany(e => e.Activities)
-            //    .WithOne(e => e.Trip)
-            //    .HasForeignKey(e => e.TripId)
-            //    .IsRequired();
+            modelBuilder.Entity<Destination>()
+                .HasMany(d => d.Accommodations)
+                .WithOne(a => a.Destination)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // modelBuilder.Entity<Activity>()
-            //    .HasOne(e => e.Trip)
-            //    .WithMany(e => e.Activities)
-            //    .HasForeignKey(e => e.TripId)
-            //    .IsRequired();
+            modelBuilder.Entity<Destination>()
+                .HasMany(d => d.Activities)
+                .WithOne(a => a.Destination)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ActivityType>()
+                .HasMany(at => at.Activities)
+                .WithOne(a => a.ActivityType)
+                .HasForeignKey(a => a.ActivityTypeId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AccommodationType>()
+                .HasMany(at => at.Accommodations)
+                .WithOne(a => a.AccommodationType)
+                .HasForeignKey(a => a.AccommodationTypeId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Accommodation>().ToTable("Accommodation");
             modelBuilder.Entity<AccommodationType>().ToTable("AccommodationType");

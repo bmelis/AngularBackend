@@ -20,13 +20,14 @@ namespace TripPlannerBackend.API.Controllers
     {
         private readonly TripPlannerDbContext _context;
         private readonly IMapper _mapper;
-        private TripAuthorizationService tripAuthorizationService;
-        public TripController(TripPlannerDbContext context, IMapper mapper)
+        private readonly TripAuthorizationService _tripAuthorizationService;
+        public TripController(TripPlannerDbContext context, IMapper mapper, TripAuthorizationService tripAuthorizationService)
         {
             _context = context;
             _mapper = mapper;
-            tripAuthorizationService = new TripAuthorizationService(context);
+            _tripAuthorizationService = tripAuthorizationService;
         }
+
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<int>> Create([FromBody] CreateTripDto trip)
@@ -64,7 +65,7 @@ namespace TripPlannerBackend.API.Controllers
             if (trip == null) return NotFound();
 
             GetTripDto tripDto = _mapper.Map<GetTripDto>(trip);
-            string? role = await tripAuthorizationService.GetUserRole(id, email);
+            string? role = await _tripAuthorizationService.GetUserRole(id, email);
             if (role == null)
             {
                 if (trip.IsPublic) return tripDto;
@@ -102,7 +103,10 @@ namespace TripPlannerBackend.API.Controllers
                 .Where(t => t.UserTrips.Any(ut => ut.UserId == email))
                 .ToListAsync();
 
-            if (!trips.Any()) return NotFound();
+            if (!trips.Any())
+            {
+                return Ok("no trips found");
+            }
 
             List<GetTripDto> tripDtos = _mapper.Map<List<GetTripDto>>(trips);
             for (int i = 0; i < trips.Count; i++)
@@ -129,7 +133,7 @@ namespace TripPlannerBackend.API.Controllers
         public async Task<ActionResult<Trip>> Update([FromRoute] int id, [FromBody] CreateTripDto updateTripDto)
         {
             string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            string? role = await tripAuthorizationService.GetUserRole(id, email);
+            string? role = await _tripAuthorizationService.GetUserRole(id, email);
             if (role != "admin") return StatusCode(403);
 
             Trip? trip = await _context.Trips.FindAsync(id);
