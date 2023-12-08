@@ -33,7 +33,7 @@ namespace TripPlannerBackend.API.Services
             foreach (string imageUrl in imagePaths)
             {
                 string file = Path.GetFileName(imageUrl);
-                string url = $"https://localhost:6587/images/placeholders/previews/{file}";
+                string url = $"https://your-api-bmelis.cloud.okteto.net/images/placeholders/previews/{file}";
                 imageUrls.Add(url);
             }
 
