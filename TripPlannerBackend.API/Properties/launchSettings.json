@@ -6,7 +6,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SERVER_URL": "https://localhost:6587"
+        "SERVER_URL": "https://your-api-bmelis.cloud.okteto.net:6587"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:6587;http://localhost:5150"
