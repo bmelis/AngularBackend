@@ -11,6 +11,9 @@ var dbUser = Environment.GetEnvironmentVariable("DB_USER");
 var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
 var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+
+Console.WriteLine(Environment.GetEnvironmentVariable("SERVER_URL"));
+
 var connectionString =
     $"Server={dbServer};Initial Catalog={dbName};User ID={dbUser};Password={dbPassword};";
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 21));
