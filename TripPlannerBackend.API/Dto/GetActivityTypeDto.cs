@@ -4,5 +4,6 @@ namespace TripPlannerBackend.API.Dto
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int ActivityCount { get; set; }
     }
 }

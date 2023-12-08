@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using TripPlannerBackend.API.Dto;
 using TripPlannerBackend.DAL;
 using TripPlannerBackend.DAL.Entity;
@@ -49,10 +50,22 @@ namespace TripPlannerBackend.API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetAccommodationTypeDto>>> GetAll()
         {
-            var accommodationTypes = await _context.AccommodationTypes.ToListAsync();
+            var accommodationTypes = await _context.AccommodationTypes.Include(at => at.Accommodations).ToListAsync();
             if (!accommodationTypes.Any()) return NotFound();
 
-            return _mapper.Map<List<GetAccommodationTypeDto>>(accommodationTypes);
+            List<GetAccommodationTypeDto> getAccommodationTypeDtos = _mapper.Map<List<GetAccommodationTypeDto>>(accommodationTypes);
+            for (int i = 0; i < getAccommodationTypeDtos.Count; i++)
+            {
+                if (accommodationTypes[i].Accommodations == null)
+                {
+                    getAccommodationTypeDtos[i].AccommodationCount = 0;
+                }
+                else
+                {
+                    getAccommodationTypeDtos[i].AccommodationCount = accommodationTypes[i].Accommodations!.Count;
+                }
+            }
+            return getAccommodationTypeDtos;
         }
 
         // update an existing accommodationtype
@@ -77,10 +90,18 @@ namespace TripPlannerBackend.API.Controllers
             var accommodationType = await _context.AccommodationTypes.FindAsync(id);
             if (accommodationType == null) return NotFound();
 
-            _context.AccommodationTypes.Remove(accommodationType);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.AccommodationTypes.Remove(accommodationType);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException _)
+            {
+                return StatusCode(409, "Delete operation failed. Accommodationtype is being referenced by accommodations.");
+            }
 
             return NoContent();
         }
+
     }
 }

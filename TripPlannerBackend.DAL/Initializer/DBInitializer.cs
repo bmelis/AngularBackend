@@ -64,9 +64,9 @@ namespace TripPlannerBackend.DAL.Initializer
             /*------------------------------------------*/
 
             context.Destinations.AddRange(
-                new Destination { Country = "België", City = "Mol", ImageUrl = "/assets/images/trip-placeholders/1.png", TripId = 1 },
-                new Destination { Country = "België", City = "Geel", ImageUrl = "/assets/images/trip-placeholders/2.png", TripId = 1 },
-                new Destination { Country = "Nederland", City = "Amsterdam", ImageUrl = "/assets/images/trip-placeholders/2.png", TripId = 1 }
+                new Destination { Country = "België", City = "Mol", ImageUrl = "https://localhost:6587/images/placeholders/1.webp", TripId = 1 },
+                new Destination { Country = "België", City = "Geel", ImageUrl = "https://localhost:6587/images/placeholders/2.webp", TripId = 1 },
+                new Destination { Country = "Nederland", City = "Amsterdam", ImageUrl = "https://localhost:6587/images/placeholders/2.webp", TripId = 1 }
                 );
             context.SaveChanges();
 
@@ -82,10 +82,10 @@ namespace TripPlannerBackend.DAL.Initializer
             /*------------------------------------------*/
 
             context.Activities.AddRange(
-                new Activity { Title = "Darten", Description = "Darten in het hotel", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(2), DestinationId = 1, ActivityTypeId = 2 },
-                new Activity { Title = "Zwemmen", Description = "We verzamelen aan het hotel", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(1), DestinationId = 1, ActivityTypeId = 2 },
-                new Activity { Title = "Museum", Description = "Leerrijke uitstap naar een museum.", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(4), DestinationId = 1, ActivityTypeId = 3 },
-                new Activity { Title = "Darten", Description = "Darten in het hotel", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(2), DestinationId = 1, ActivityTypeId = 2 }
+                new Activity { Title = "Darten", Description = "Darten in het hotel", Url = "", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(2), DestinationId = 1, ActivityTypeId = 2 },
+                new Activity { Title = "Zwemmen", Description = "We verzamelen aan het hotel", Url = "", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(1), DestinationId = 1, ActivityTypeId = 2 },
+                new Activity { Title = "Museum", Description = "Leerrijke uitstap naar een museum.", Url = "", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(4), DestinationId = 1, ActivityTypeId = 3 },
+                new Activity { Title = "Darten", Description = "Darten in het hotel", Url = "", StartDate = DateTime.Now, EndDate = DateTime.Now.AddHours(2), DestinationId = 1, ActivityTypeId = 2 }
                 );
             context.SaveChanges();           
 

@@ -15,12 +15,12 @@ namespace TripPlannerBackend.API.Controllers
     {
         private readonly TripPlannerDbContext _context;
         private readonly IMapper _mapper;
-        private TripAuthorizationService tripAuthorizationService;
-        public UserTripController(TripPlannerDbContext context, IMapper mapper)
+        private readonly TripAuthorizationService _tripAuthorizationService;
+        public UserTripController(TripPlannerDbContext context, IMapper mapper, TripAuthorizationService tripAuthorizationService)
         {
             _context = context;
             _mapper = mapper;
-            tripAuthorizationService = new TripAuthorizationService(context);
+            _tripAuthorizationService = tripAuthorizationService;
         }
 
         [Authorize]
@@ -28,7 +28,7 @@ namespace TripPlannerBackend.API.Controllers
         public async Task<ActionResult<List<GetUserTripDto>>> Create([FromBody] List<GetUserTripDto> createUserTripDtos, [FromQuery] int tripId)
         {
             string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (await tripAuthorizationService.GetUserRole(tripId, email) != "admin") return StatusCode(403);
+            if (await _tripAuthorizationService.GetUserRole(tripId, email) != "admin") return StatusCode(403);
 
             List<UserTrip> userTripsToConvert = new List<UserTrip>();
             int count = 0;
@@ -71,7 +71,7 @@ namespace TripPlannerBackend.API.Controllers
         public async Task<ActionResult<List<GetUserTripDto>>> GetByTripId([FromRoute] int tripId)
         {
             string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (await tripAuthorizationService.GetUserRole(tripId, email) != "admin") return StatusCode(403);
+            if (await _tripAuthorizationService.GetUserRole(tripId, email) != "admin") return StatusCode(403);
 
             List<UserTrip> userTrips = await _context.UserTrips
                 .Where(ut => ut.TripId == tripId)
@@ -96,7 +96,7 @@ namespace TripPlannerBackend.API.Controllers
         public async Task<ActionResult> Update([FromBody] List<GetUserTripDto> updateUserTripDtos, [FromQuery] int tripId)
         {
             string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (await tripAuthorizationService.GetUserRole(tripId, email) != "admin") return StatusCode(403);
+            if (await _tripAuthorizationService.GetUserRole(tripId, email) != "admin") return StatusCode(403);
 
             int count = 0;
             try
@@ -127,7 +127,7 @@ namespace TripPlannerBackend.API.Controllers
         public async Task<ActionResult> Delete([FromQuery] List<int> ids, [FromQuery] int tripId)
         {
             string email = User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (await tripAuthorizationService.GetUserRole(tripId, email) != "admin") return StatusCode(403);
+            if (await _tripAuthorizationService.GetUserRole(tripId, email) != "admin") return StatusCode(403);
 
             int count = 0;
             try
